@@ -1,436 +1,1398 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kamalesh Nutakki — Data & GenAI Systems Engineer</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            obsidian: '#070709',
-            surface: '#0f1015',
-            ivory: '#F4F3EF',
-            vermilion: '#FF4D2A',
-            emerald: '#10B981',
-            muted: '#8E929F'
-          },
-          fontFamily: {
-            display: ['Syne', 'sans-serif'],
-            serif: ['Instrument Serif', 'serif'],
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    body {
-      background-color: #070709;
-      color: #F4F3EF;
-      overflow-x: hidden;
-    }
-    /* Subtle tactile film grain */
-    .noise-bg {
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
-    }
-    /* Spotlight Card Effect */
-    .bento-card {
-      position: relative;
-      background: rgba(15, 16, 21, 0.75);
-      border: 1px solid rgba(244, 243, 239, 0.08);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
-      overflow: hidden;
-    }
-    .bento-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 77, 42, 0.12), transparent 40%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-    .bento-card:hover::before {
-      opacity: 1;
-    }
-    .bento-card:hover {
-      border-color: rgba(255, 77, 42, 0.35);
-      transform: translateY(-3px);
-    }
-    .grid-lines {
-      background-size: 64px 64px;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamalesh Nutakki — Data Engineer / AI-GenAI Engineer</title>
+<meta name="description" content="Kamalesh Nutakki — Data Engineer at TCS (JLR account). GCP BigQuery, SQL/EDW pipelines, Python, and LLM prompt engineering.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     EDITABLE DESIGN TOKENS — Editorial Technical Luxury Palette
+     ============================================================ */
+  :root {
+    --bg:           #060709;
+    --bg-soft:      #0B0D12;
+    --card:         rgba(15, 18, 25, 0.72);
+    --card-solid:   #0F1219;
+    --card-border:  rgba(237, 239, 242, 0.08);
+    --card-glow:    rgba(255, 85, 46, 0.35);
+    --ink:          #F3F2EE;
+    --ink-dim:      #949BA8;
+    --ink-faint:    #58606E;
+
+    /* High-craft accents: International Vermilion, Cyber Cyan, Acid Emerald, Warm Amber */
+    --accent:       #FF552E;
+    --accent-dim:   rgba(255, 85, 46, 0.14);
+    --cyan:         #38BDF8;
+    --cyan-dim:     rgba(56, 189, 248, 0.12);
+    --amber:        #F59E0B;
+    --green:        #10B981;
+
+    --display: 'Syne', sans-serif;
+    --serif:   'Instrument Serif', serif;
+    --body:    'Plus Jakarta Sans', sans-serif;
+    --mono:    'JetBrains Mono', monospace;
+
+    --maxw: 1180px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    selection-background-color: var(--accent);
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #060709; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  /* ============== Tactile Film Grain & Architectural Grid ============== */
+  .ambient-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-size: 64px 64px;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.022) 1px, transparent 1px);
+  }
+  .ambient-canvas::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 15%, rgba(255, 85, 46, 0.08), transparent 45%),
+                radial-gradient(circle at 15% 75%, rgba(56, 189, 248, 0.06), transparent 45%);
+  }
+  .film-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============== Layout Shell ============== */
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============== Floating Telemetry Navbar ============== */
+  nav {
+    position: sticky;
+    top: 16px;
+    z-index: 60;
+    margin: 16px auto 0;
+    max-width: calc(var(--maxw) - 24px);
+    padding: 0 14px;
+  }
+  .nav-inner {
+    background: rgba(11, 13, 18, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: 100px;
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+  .nav-id {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.02em;
+  }
+  .nav-id .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    animation: pulseDot 2.2s infinite;
+  }
+  @keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.65; }
+  }
+  .nav-links {
+    display: flex;
+    gap: 26px;
+    font-size: 12.5px;
+    font-family: var(--mono);
+  }
+  .nav-links a {
+    color: var(--ink-dim);
+    transition: color .2s;
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a::before {
+    content: "/";
+    color: var(--accent);
+    margin-right: 3px;
+    opacity: 0.6;
+  }
+  .cmd-btn {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    color: var(--ink-dim);
+    padding: 6px 12px;
+    border-radius: 99px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .2s;
+  }
+  .cmd-btn:hover {
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+  .cmd-btn kbd {
+    background: rgba(255,255,255,0.09);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--ink);
+  }
+
+  /* ============== Hero Section (2-Column Editorial + Live DAG) ============== */
+  .hero {
+    padding: 84px 0 72px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.95fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(255, 85, 46, 0.28);
+    margin-bottom: 26px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(46px, 6.8vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 .serif-italic {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: lowercase;
+    color: var(--accent);
+    font-size: 1.08em;
+    letter-spacing: 0;
+  }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 14.5px;
+    color: var(--ink);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hero-role .badge-role {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    padding: 4px 12px;
+    border-radius: 6px;
+  }
+  .hero-role .sep { color: var(--accent); font-weight: 600; }
+  .hero p.lede {
+    font-size: 17.5px;
+    color: var(--ink-dim);
+    max-width: 580px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+  .hero p.lede strong {
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 1px dashed rgba(255, 85, 46, 0.5);
+  }
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 13px 22px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition: all .22s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn:hover { transform: translateY(-3px); }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    font-weight: 600;
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    color: var(--ink);
+    box-shadow: 0 12px 30px rgba(255, 85, 46, 0.3);
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--card-border);
+    color: var(--ink);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Interactive Right-Side Pipeline Console */
+  .pipeline-console {
+    background: linear-gradient(160deg, rgba(20, 24, 34, 0.85), rgba(10, 12, 18, 0.92));
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+  }
+  .console-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--card-border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+  .console-dots { display: flex; gap: 6px; }
+  .console-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.14); }
+  .console-dots span:nth-child(1) { background: #FF5F56; }
+  .console-dots span:nth-child(2) { background: #FFBD2E; }
+  .console-dots span:nth-child(3) { background: #27C93F; }
+
+  .dag-node {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: border-color .25s, transform .25s;
+  }
+  .dag-node:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+  .dag-left { display: flex; align-items: center; gap: 12px; }
+  .dag-id {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 7px;
+    border-radius: 5px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .dag-id.cyan { background: var(--cyan-dim); color: var(--cyan); }
+  .dag-id.green { background: rgba(16, 185, 129, 0.14); color: var(--green); }
+  .dag-title { font-family: var(--mono); font-size: 12.5px; color: var(--ink); font-weight: 500; }
+  .dag-sub { font-size: 11.5px; color: var(--ink-faint); }
+  .dag-status {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .dag-connector {
+    height: 14px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--cyan));
+    margin: -8px 0 4px 28px;
+    opacity: 0.6;
+  }
+  .console-footer {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+  }
+
+  /* ============== Bento Metric Strip ============== */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 56px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+  }
+  .stat:hover {
+    border-color: rgba(255, 85, 46, 0.4);
+    transform: translateY(-3px);
+  }
+  .stat .num {
+    font-family: var(--display);
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .stat .label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============== Spotlight Card Engine ============== */
+  .spotlight-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), border-color .3s ease;
+  }
+  .spotlight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(550px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 85, 46, 0.11), transparent 40%);
+    opacity: 0;
+    transition: opacity .35s ease;
+    pointer-events: none;
+  }
+  .spotlight-card:hover::before { opacity: 1; }
+  .spotlight-card:hover {
+    border-color: rgba(255, 85, 46, 0.35);
+    transform: translateY(-4px);
+  }
+
+  /* ============== Section Scaffolding ============== */
+  section { padding: 80px 0; position: relative; }
+  .section-head {
+    margin-bottom: 44px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 20px;
+  }
+  .section-head-left { display: flex; align-items: baseline; gap: 16px; }
+  .section-head .tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: var(--accent-dim);
+  }
+  .section-head h2 {
+    font-family: var(--display);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  /* ============== Experience ============== */
+  .exp-card {
+    padding: 38px;
+  }
+  .exp-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--accent), var(--cyan));
+  }
+  .exp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .exp-title {
+    font-family: var(--display);
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .exp-org {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    margin-top: 4px;
+  }
+  .exp-date {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    padding: 6px 14px;
+    border-radius: 99px;
+  }
+  .exp-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .exp-list li {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 16px 18px 16px 38px;
+    position: relative;
+    color: var(--ink-dim);
+    font-size: 14.5px;
+  }
+  .exp-list li::before {
+    content: "▹";
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+  .exp-stack {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--card-border);
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    padding: 6px 14px;
+    border-radius: 99px;
+  }
+
+  /* ============== Projects (Asymmetric Bento + Filter Tabs) ============== */
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 7px 14px;
+    border-radius: 99px;
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+    font-weight: 600;
+  }
+
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+  .proj-card {
+    grid-column: span 6;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .proj-card.full {
+    grid-column: span 12;
+    background: linear-gradient(135deg, rgba(255, 85, 46, 0.08), rgba(15, 18, 25, 0.85) 55%);
+  }
+  .proj-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .proj-kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.14);
+    color: var(--amber);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+  .proj-kicker.kind-academic {
+    background: rgba(16, 185, 129, 0.14);
+    color: var(--green);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  .proj-kicker.kind-side {
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+  .proj-index {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+  .proj-card h3 {
+    font-family: var(--display);
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .proj-sub {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+  }
+  .proj-desc {
+    color: var(--ink-dim);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .proj-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid var(--card-border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+  .proj-metric {
+    font-family: var(--display);
+    font-size: 20px;
+    color: var(--ink);
+    font-weight: 700;
+    background: rgba(255,255,255,0.05);
+    padding: 4px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+  }
+
+  /* ============== Tech Stack Matrix ============== */
+  .stack-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+  }
+  .stack-card {
+    padding: 26px;
+  }
+  .stack-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .stack-label::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--card-border);
+    margin-left: 12px;
+  }
+  .stack-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .stack-tag {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    padding: 7px 13px;
+    border-radius: 8px;
+    transition: all .18s ease;
+  }
+  .stack-tag:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    transform: translateY(-2px);
+  }
+
+  /* ============== Education / Certs / Leadership ============== */
+  .ed-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.2fr;
+    gap: 20px;
+  }
+  .ed-card, .cert-card { padding: 30px; }
+  .ed-card h3 {
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .ed-card .ed-school {
+    color: var(--ink-dim);
+    font-size: 14.5px;
+  }
+  .ed-card .ed-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--card-border);
+  }
+  .cert-card h4 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+  .cert-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cert-list li {
+    font-size: 14px;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .cert-list li:last-child { border-bottom: none; padding-bottom: 0; }
+  .cert-list li .cert-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    background: rgba(255,255,255,0.05);
+    padding: 3px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  /* ============== Contact Banner ============== */
+  .contact-box {
+    padding: 72px 40px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 85, 46, 0.16), rgba(15, 18, 25, 0.9) 70%);
+    margin-bottom: 64px;
+  }
+  .contact-box h2 {
+    font-family: var(--display);
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+    line-height: 1.08;
+    text-transform: uppercase;
+  }
+  .contact-box h2 .serif-italic {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+    text-transform: lowercase;
+  }
+  .contact-box p {
+    color: var(--ink-dim);
+    max-width: 520px;
+    margin: 0 auto 34px;
+    font-size: 16.5px;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  footer {
+    border-top: 1px solid var(--card-border);
+    padding: 32px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ============== Command Modal (Cmd+K) & Copy Toast ============== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 7, 9, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .cmd-modal {
+    background: var(--card-solid);
+    border: 1px solid rgba(255, 85, 46, 0.4);
+    border-radius: 18px;
+    width: 100%;
+    max-width: 520px;
+    padding: 22px;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.8);
+  }
+  .cmd-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 12px;
+  }
+  .cmd-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .cmd-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--ink);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 120;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 10px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* ============== Reveal on Scroll ============== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .65s ease, transform .65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============== Responsive ============== */
+  @media (max-width: 920px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .exp-list { grid-template-columns: 1fr; }
+    .proj-card { grid-column: span 12; }
+    .ed-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
 </head>
-<body class="font-sans antialiased selection:bg-vermilion selection:text-obsidian grid-lines relative">
+<body>
 
-  <!-- Film Grain Overlay -->
-  <div class="fixed inset-0 noise-bg pointer-events-none z-50"></div>
+<div class="ambient-canvas" aria-hidden="true"></div>
+<div class="film-grain" aria-hidden="true"></div>
 
-  <!-- Top Telemetry Bar -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-obsidian/80 border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between font-mono text-xs">
-      <div class="flex items-center gap-3">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald animate-pulse"></span>
-        <span class="tracking-widest uppercase text-ivory font-medium">KN // SYS.2026</span>
-        <span class="hidden sm:inline-block text-muted pl-3 border-l border-white/10">PUNE, IN [18.59° N, 73.73° E]</span>
-      </div>
-      <nav class="hidden md:flex items-center gap-8 text-muted">
-        <a href="#work" class="hover:text-ivory transition-colors">/ARCHITECTURE</a>
-        <a href="#telemetry" class="hover:text-ivory transition-colors">/STACK</a>
-        <a href="#trajectory" class="hover:text-ivory transition-colors">/TRAJECTORY</a>
-        <a href="#credentials" class="hover:text-ivory transition-colors">/CREDENTIALS</a>
-      </nav>
-      <button onclick="toggleCmdModal()" class="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 border border-white/10 hover:border-vermilion/50 text-ivory transition">
-        <span>QUICK JUMP</span>
-        <kbd class="px-1.5 py-0.5 text-[10px] bg-white/10 rounded">⌘K</kbd>
-      </button>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-id">
+      <span class="dot"></span>
+      <span id="nav-name-slot">kamalesh.nutakki</span>
     </div>
-  </header>
+    <div class="nav-links">
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#stack">stack</a>
+      <a href="#education">credentials</a>
+      <a href="#contact">contact</a>
+    </div>
+    <button class="cmd-btn" onclick="toggleCmd()" aria-label="Open Command Palette">
+      <span>QUICK ACTIONS</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+</nav>
 
-  <main class="max-w-7xl mx-auto px-6 pt-16 pb-28">
-
-    <!-- Editorial Hero Section -->
-    <section class="relative pb-24 border-b border-white/10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
-        <div class="lg:col-span-8">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vermilion/10 border border-vermilion/30 text-vermilion font-mono text-xs mb-8">
-            <span>DATA ENGINEER & GEN-AI ARCHITECT</span>
-          </div>
-          <h1 class="font-display text-5xl sm:text-7xl lg:text-[84px] font-extrabold tracking-tight leading-[0.94] uppercase">
-            Kamalesh <br/>
-            <span class="font-serif italic font-normal text-vermilion lowercase pr-3">Nutakki</span>
-          </h1>
-        </div>
-        <div class="lg:col-span-4 flex flex-col justify-between space-y-6">
-          <p class="text-muted text-base sm:text-lg leading-relaxed">
-            Architecting high-reliability enterprise data observability pipelines and autonomous GenAI decision systems. Currently building BI & data ecosystems at <span class="text-ivory font-medium">Tata Consultancy Services</span>.
-          </p>
-          <div class="flex flex-wrap items-center gap-4 pt-2">
-            <a href="#work" class="px-6 py-3.5 bg-ivory text-obsidian font-mono text-xs font-semibold uppercase tracking-wider rounded hover:bg-vermilion hover:text-ivory transition-all">
-              Explore Systems →
-            </a>
-            <a href="https://github.com/kamaleshyeager" target="_blank" class="px-5 py-3.5 border border-white/15 hover:border-ivory font-mono text-xs uppercase tracking-wider rounded transition-all">
-              GitHub // @kamaleshyeager
-            </a>
-          </div>
-        </div>
+<header class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">● LIVE TELEMETRY // TCS · JLR ACCOUNT</div>
+      <h1 id="hero-name">Kamalesh<br><span class="serif-italic">Nutakki.</span></h1>
+      <div class="hero-role" id="hero-role">
+        <span class="badge-role">Data Engineer</span>
+        <span class="sep">×</span>
+        <span class="badge-role">AI · GenAI Engineer</span>
       </div>
-
-      <!-- High-Contrast Metric Strip -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-white/10 font-mono">
-        <div>
-          <span class="text-xs text-muted block">01 / ENTERPRISE FOCUS</span>
-          <span class="text-xl sm:text-2xl text-ivory font-semibold mt-1 block">BigQuery & Observability</span>
-        </div>
-        <div>
-          <span class="text-xs text-muted block">02 / AI FOUNDATIONS</span>
-          <span class="text-xl sm:text-2xl text-ivory font-semibold mt-1 block">2x Anthropic Certified</span>
-        </div>
-        <div>
-          <span class="text-xs text-muted block">03 / CORE LANGUAGES</span>
-          <span class="text-xl sm:text-2xl text-ivory font-semibold mt-1 block">Java · Python · SQL</span>
-        </div>
-        <div>
-          <span class="text-xs text-muted block">04 / EDUCATION</span>
-          <span class="text-xl sm:text-2xl text-ivory font-semibold mt-1 block">B.Tech CSE, VIT</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Asymmetric Bento Grid: Selected Works -->
-    <section id="work" class="py-24 border-b border-white/10">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 gap-4">
-        <div>
-          <span class="font-mono text-xs text-vermilion uppercase tracking-widest block mb-2">// 01 — SELECTED ARCHITECTURE</span>
-          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase tracking-tight">Engineered Systems</h2>
-        </div>
-        <p class="font-mono text-xs text-muted max-w-xs">
-          Production prototypes, hackathon winners, and deep learning research models.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- Flagship 1: 7 Columns -->
-        <article class="bento-card lg:col-span-7 rounded-2xl p-8 sm:p-10 flex flex-col justify-between min-h-[380px]">
-          <div>
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-6">
-              <span class="px-2.5 py-1 rounded bg-white/5 text-ivory border border-white/10">TCS AMD AI HACKATHON // 2026</span>
-              <span>SYS_01</span>
-            </div>
-            <h3 class="font-display text-2xl sm:text-3xl font-bold mb-3">Supply Chain Operations Console & AI Copilot</h3>
-            <p class="text-muted text-sm sm:text-base leading-relaxed max-w-xl">
-              End-to-end decision intelligence console pairing predictive ML ensembles with a conversational GenAI copilot to detect logistics bottlenecks, forecast inventory risk, and automate mitigation workflows in real time.
-            </p>
-          </div>
-
-          <div class="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex flex-wrap gap-2 font-mono text-xs">
-              <span class="px-2.5 py-1 rounded bg-vermilion/15 text-vermilion">Gemini 1.5 Pro</span>
-              <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">XGBoost</span>
-              <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Random Forest</span>
-              <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Python</span>
-            </div>
-            <span class="font-mono text-xs text-ivory group-hover:text-vermilion"> PREDICTIVE + GEN-AI →</span>
-          </div>
-        </article>
-
-        <!-- Flagship 2: 5 Columns -->
-        <article class="bento-card lg:col-span-5 rounded-2xl p-8 sm:p-10 flex flex-col justify-between min-h-[380px]">
-          <div>
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-6">
-              <span class="px-2.5 py-1 rounded bg-white/5 text-ivory border border-white/10">TCS AI FRIDAY // 2026</span>
-              <span>SYS_02</span>
-            </div>
-            <h3 class="font-display text-2xl sm:text-3xl font-bold mb-3">ClarifiAI — Autonomous BA Engine</h3>
-            <p class="text-muted text-sm sm:text-base leading-relaxed">
-              Interactive requirement-engineering agent that interrogates ambiguous stakeholder prompts, identifies edge cases, and synthesizes structured technical specifications using hybrid local and cloud LLMs.
-            </p>
-          </div>
-
-          <div class="mt-10 pt-6 border-t border-white/10 flex flex-wrap gap-2 font-mono text-xs">
-            <span class="px-2.5 py-1 rounded bg-vermilion/15 text-vermilion">Claude API</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Ollama</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Streamlit</span>
-          </div>
-        </article>
-
-        <!-- Project 3: 5 Columns -->
-        <article class="bento-card lg:col-span-5 rounded-2xl p-8 sm:p-10 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-6">
-              <span class="px-2.5 py-1 rounded bg-white/5 text-ivory border border-white/10">DEEP LEARNING RESEARCH</span>
-              <span>SYS_03</span>
-            </div>
-            <h3 class="font-display text-2xl font-bold mb-3">Diabetic Retinopathy Diagnostic Pipeline</h3>
-            <p class="text-muted text-sm leading-relaxed">
-              Multi-stage retinal fundus grading pipeline trained on the APTOS 2019 dataset, benchmarking deep residual and densely connected convolutional networks for clinical-grade severity classification.
-            </p>
-          </div>
-          <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-2 font-mono text-xs">
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">ResNet-152</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">DenseNet-121</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">APTOS 2019</span>
-          </div>
-        </article>
-
-        <!-- Project 4: 7 Columns -->
-        <article class="bento-card lg:col-span-7 rounded-2xl p-8 sm:p-10 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between font-mono text-xs text-muted mb-6">
-              <span class="px-2.5 py-1 rounded bg-emerald/15 text-emerald border border-emerald/30">ENTERPRISE DATA ENGINEERING</span>
-              <span>SYS_04</span>
-            </div>
-            <h3 class="font-display text-2xl sm:text-3xl font-bold mb-3">Enterprise Data Observability & Governance</h3>
-            <p class="text-muted text-sm sm:text-base leading-relaxed">
-              Designing automated SQL validation frameworks, schema-drift monitors, and access-control verification pipelines in Google BigQuery for seamless Monte Carlo observability and IDMC Marketplace integration.
-            </p>
-          </div>
-          <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-2 font-mono text-xs">
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Google BigQuery</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Monte Carlo</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">IDMC Marketplace</span>
-            <span class="px-2.5 py-1 rounded bg-white/5 text-ivory">Advanced SQL</span>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- Technical Telemetry / Stack Matrix -->
-    <section id="telemetry" class="py-24 border-b border-white/10">
-      <span class="font-mono text-xs text-vermilion uppercase tracking-widest block mb-2">// 02 — SYSTEM TELEMETRY</span>
-      <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase tracking-tight mb-14">Technical Matrix</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono">
-        <div class="bento-card p-7 rounded-xl">
-          <div class="text-xs text-muted mb-4">[01 // LANGUAGES & CORE]</div>
-          <ul class="space-y-3 text-sm">
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>Java (Core & DSA)</span><span class="text-emerald">PRIMARY</span></li>
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>Python (Data / ML)</span><span class="text-emerald">PRODUCTION</span></li>
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>SQL (BigQuery / Oracle)</span><span class="text-emerald">PRODUCTION</span></li>
-            <li class="flex justify-between"><span>Algorithmic Problem Solving</span><span class="text-muted">LeetCode Daily</span></li>
-          </ul>
-        </div>
-
-        <div class="bento-card p-7 rounded-xl">
-          <div class="text-xs text-muted mb-4">[02 // AI & MACHINE LEARNING]</div>
-          <ul class="space-y-3 text-sm">
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>Claude API & Foundations</span><span class="text-vermilion">CERTIFIED</span></li>
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>Gemini 1.5 Pro / Ollama</span><span class="text-ivory">AGENTIC</span></li>
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>ResNet / DenseNet / CNNs</span><span class="text-ivory">RESEARCH</span></li>
-            <li class="flex justify-between"><span>XGBoost / Random Forest</span><span class="text-ivory">ENSEMBLES</span></li>
-          </ul>
-        </div>
-
-        <div class="bento-card p-7 rounded-xl">
-          <div class="text-xs text-muted mb-4">[03 // DATA & CLOUD INFRA]</div>
-          <ul class="space-y-3 text-sm">
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>Google BigQuery & Cloud</span><span class="text-emerald">ENTERPRISE</span></li>
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>Monte Carlo & IDMC</span><span class="text-ivory">OBSERVABILITY</span></li>
-            <li class="flex justify-between border-b border-white/5 pb-2"><span>AWS Cloud Ecosystem</span><span class="text-vermilion">CERTIFIED</span></li>
-            <li class="flex justify-between"><span>GitHub Codespaces / Colab</span><span class="text-muted">WORKFLOW</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience & Credentials Split -->
-    <section id="trajectory" class="py-24 grid grid-cols-1 lg:grid-cols-12 gap-12">
-      
-      <!-- Experience Column -->
-      <div class="lg:col-span-7">
-        <span class="font-mono text-xs text-vermilion uppercase tracking-widest block mb-2">// 03 — CAREER LOG</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-bold uppercase tracking-tight mb-10">Trajectory</h2>
-
-        <div class="space-y-8 border-l border-white/15 pl-6">
-          <div class="relative">
-            <span class="absolute -left-[29px] top-1.5 w-2.5 h-2.5 rounded-full bg-vermilion"></span>
-            <span class="font-mono text-xs text-vermilion">FEB 2026 — PRESENT</span>
-            <h3 class="text-xl font-bold mt-1">Data Engineer & AI/GenAI Engineer</h3>
-            <p class="text-sm text-muted font-mono mb-2">Tata Consultancy Services (TCS) · Pune</p>
-            <p class="text-sm text-muted leading-relaxed">
-              Engineering enterprise BI solutions, BigQuery data observability validations, and GenAI prototypes for global automotive retail and supply chain operations.
-            </p>
-          </div>
-
-          <div class="relative">
-            <span class="absolute -left-[29px] top-1.5 w-2.5 h-2.5 rounded-full bg-white/40"></span>
-            <span class="font-mono text-xs text-muted">JUN 2025 — JUL 2025</span>
-            <h3 class="text-xl font-bold mt-1">Judicial Intern — Office of Hon’ble Mr. Justice A. Muhamed Mustaque</h3>
-            <p class="text-sm text-muted font-mono mb-2">High Court of Kerala</p>
-            <p class="text-sm text-muted leading-relaxed">
-              Conducted analytical research at the intersection of constitutional frameworks, technology policy, and judicial administration.
-            </p>
-          </div>
-
-          <div class="relative">
-            <span class="absolute -left-[29px] top-1.5 w-2.5 h-2.5 rounded-full bg-white/40"></span>
-            <span class="font-mono text-xs text-muted">2021 — 2025</span>
-            <h3 class="text-xl font-bold mt-1">B.Tech in Computer Science & Engineering</h3>
-            <p class="text-sm text-muted font-mono mb-2">Vellore Institute of Technology (VIT)</p>
-            <p class="text-sm text-muted leading-relaxed">
-              Club Supervisor for Next Gen Cloud Club, Core Committee Member for Vitopia, and Vice President of the Anchoring Club.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Credentials & Beyond Code -->
-      <div id="credentials" class="lg:col-span-5">
-        <span class="font-mono text-xs text-vermilion uppercase tracking-widest block mb-2">// 04 — VERIFIED LICENSES</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-bold uppercase tracking-tight mb-10">Credentials</h2>
-
-        <div class="space-y-4 font-mono text-xs">
-          <div class="bento-card p-5 rounded-xl flex items-center justify-between">
-            <div>
-              <span class="text-ivory font-semibold block text-sm">Claude Certified Developer — Foundations</span>
-              <span class="text-muted">Anthropic · 2026</span>
-            </div>
-            <span class="px-2 py-1 bg-vermilion/15 text-vermilion rounded">VERIFIED</span>
-          </div>
-
-          <div class="bento-card p-5 rounded-xl flex items-center justify-between">
-            <div>
-              <span class="text-ivory font-semibold block text-sm">Claude Certified Associate — Foundations</span>
-              <span class="text-muted">Anthropic · 2026</span>
-            </div>
-            <span class="px-2 py-1 bg-vermilion/15 text-vermilion rounded">VERIFIED</span>
-          </div>
-
-          <div class="bento-card p-5 rounded-xl flex items-center justify-between">
-            <div>
-              <span class="text-ivory font-semibold block text-sm">Oracle Database 19c: Basic SQL</span>
-              <span class="text-muted">Oracle · 2025</span>
-            </div>
-            <span class="px-2 py-1 bg-white/10 text-ivory rounded">VERIFIED</span>
-          </div>
-
-          <div class="bento-card p-5 rounded-xl flex items-center justify-between">
-            <div>
-              <span class="text-ivory font-semibold block text-sm">AWS Certified Cloud Practitioner</span>
-              <span class="text-muted">Amazon Web Services · 2024</span>
-            </div>
-            <span class="px-2 py-1 bg-white/10 text-ivory rounded">VERIFIED</span>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- Minimalist Footer -->
-  <footer class="border-t border-white/10 py-12 px-6 font-mono text-xs text-muted">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div>© 2026 KAMALESH NUTAKKI. ENGINEERED WITH PRECISION.</div>
-      <div class="flex gap-6">
-        <a href="https://github.com/kamaleshyeager" target="_blank" class="hover:text-ivory">GITHUB</a>
-        <a href="mailto:kamalesh@example.com" class="hover:text-ivory">EMAIL</a>
+      <p class="lede" id="hero-lede">
+        I build production EDW pipelines on <strong>GCP BigQuery</strong> by day, and wire LLMs into <strong>data cleaning, classification, and chat experiences</strong> by night — usually at a hackathon, with the clock running out.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="mailto:kamalesh.nutakki@gmail.com">email me →</a>
+        <button class="btn btn-ghost" onclick="copyEmail()">copy email</button>
+        <a class="btn btn-ghost" href="#" id="github-link" target="_blank" rel="noopener">github ↗</a>
+        <a class="btn btn-ghost" href="#" id="linkedin-link" target="_blank" rel="noopener">linkedin ↗</a>
       </div>
     </div>
-  </footer>
 
-  <!-- Command Palette Modal (Cmd/Ctrl + K) -->
-  <div id="cmdModal" class="fixed inset-0 bg-obsidian/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-    <div class="bento-card w-full max-w-lg rounded-2xl p-6 border border-white/20 shadow-2xl">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10 font-mono text-xs">
-        <span class="text-vermilion">// COMMAND NAVIGATION</span>
-        <button onclick="toggleCmdModal()" class="text-muted hover:text-ivory">[ESC]</button>
+    <!-- Interactive Engineering DAG Visualizer -->
+    <div class="pipeline-console spotlight-card reveal">
+      <div class="console-bar">
+        <div class="console-dots"><span></span><span></span><span></span></div>
+        <span>DAG // JLR_BI_GENAI_PIPELINE.yaml</span>
+        <span style="color:var(--green)">● ACTIVE</span>
       </div>
-      <div class="py-4 space-y-2 font-mono text-sm">
-        <a href="#work" onclick="toggleCmdModal()" class="block p-3 rounded hover:bg-white/5 flex justify-between">
-          <span>01. View AI & Data Architecture</span><span class="text-muted">→</span>
-        </a>
-        <a href="#telemetry" onclick="toggleCmdModal()" class="block p-3 rounded hover:bg-white/5 flex justify-between">
-          <span>02. Inspect Technical Stack Matrix</span><span class="text-muted">→</span>
-        </a>
-        <a href="#trajectory" onclick="toggleCmdModal()" class="block p-3 rounded hover:bg-white/5 flex justify-between">
-          <span>03. Career Log & VIT Leadership</span><span class="text-muted">→</span>
-        </a>
-        <a href="https://github.com/kamaleshyeager" target="_blank" class="block p-3 rounded hover:bg-white/5 flex justify-between text-vermilion">
-          <span>04. Open GitHub (@kamaleshyeager)</span><span>↗</span>
-        </a>
+
+      <div class="dag-node">
+        <div class="dag-left">
+          <span class="dag-id">STAGE_01</span>
+          <div>
+            <div class="dag-title">GCP BigQuery EDW Ingestion</div>
+            <div class="dag-sub">SQL Transformations · 100k+ Automotive Records</div>
+          </div>
+        </div>
+        <div class="dag-status">99.9% SLA</div>
+      </div>
+      <div class="dag-connector"></div>
+
+      <div class="dag-node">
+        <div class="dag-left">
+          <span class="dag-id cyan">STAGE_02</span>
+          <div>
+            <div class="dag-title">Multi-LLM Semantic Engine</div>
+            <div class="dag-sub">Claude API · Gemini 1.5 Pro · Prompt Routing</div>
+          </div>
+        </div>
+        <div class="dag-status">-30% EFFORT</div>
+      </div>
+      <div class="dag-connector"></div>
+
+      <div class="dag-node" style="margin-bottom:0">
+        <div class="dag-left">
+          <span class="dag-id green">STAGE_03</span>
+          <div>
+            <div class="dag-title">Predictive & Decision Console</div>
+            <div class="dag-sub">XGBoost · Python Validation · BI Reporting</div>
+          </div>
+        </div>
+        <div class="dag-status">VERIFIED</div>
+      </div>
+
+      <div class="console-footer">
+        <span>LOC: PUNE, IN</span>
+        <span>STACK: SQL · PYTHON · LLMs</span>
       </div>
     </div>
   </div>
 
-  <script>
-    // Spotlight hover tracking for Bento Cards
-    document.querySelectorAll('.bento-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
-    });
+  <div class="hero-stats" id="hero-stats"></div>
+</header>
 
-    // Command Palette Toggle
-    const cmdModal = document.getElementById('cmdModal');
-    function toggleCmdModal() {
-      cmdModal.classList.toggle('hidden');
-      cmdModal.classList.toggle('flex');
+<main class="wrap">
+
+  <section id="experience">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <span class="tag">01 // PRODUCTION</span>
+        <h2>Experience</h2>
+      </div>
+    </div>
+    <div id="experience-mount"></div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <span class="tag">02 // ARCHIVE</span>
+        <h2>Selected Systems</h2>
+      </div>
+      <div class="filter-tabs" id="project-filters">
+        <button class="filter-btn active" data-filter="all">All Work</button>
+        <button class="filter-btn" data-filter="hackathon">Hackathons</button>
+        <button class="filter-btn" data-filter="academic">Deep Learning & NLP</button>
+      </div>
+    </div>
+    <div class="proj-grid" id="projects-mount"></div>
+  </section>
+
+  <section id="stack">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <span class="tag">03 // TELEMETRY</span>
+        <h2>Tech Stack</h2>
+      </div>
+    </div>
+    <div class="stack-groups" id="stack-mount"></div>
+  </section>
+
+  <section id="education">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <span class="tag">04 // VERIFIED</span>
+        <h2>Education &amp; Credentials</h2>
+      </div>
+    </div>
+    <div class="ed-grid" id="education-mount"></div>
+  </section>
+
+</main>
+
+<section id="contact" class="wrap">
+  <div class="contact-box spotlight-card reveal">
+    <h2>Building something with<br>data or LLMs? <span class="serif-italic">Let's talk.</span></h2>
+    <p>Open to AI/GenAI Engineer and Data Engineer collaborations — and always up for discussing BigQuery pipelines, agentic prompts, or the next hackathon sprint.</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="mailto:kamalesh.nutakki@gmail.com">kamalesh.nutakki@gmail.com →</a>
+      <button class="btn btn-ghost" onclick="copyEmail()">Copy Email Address</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div id="footer-text">© 2026 Kamalesh Nutakki — engineered with precision</div>
+    <div>PRESS <kbd style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--ink)">⌘K</kbd> FOR QUICK NAV</div>
+  </div>
+</footer>
+
+<!-- Command Palette Modal -->
+<div class="modal-backdrop" id="cmd-modal" onclick="if(event.target===this)toggleCmd()">
+  <div class="cmd-modal">
+    <div class="cmd-head">
+      <span>// COMMAND PALETTE</span>
+      <span style="cursor:pointer;color:var(--ink-dim)" onclick="toggleCmd()">[ESC]</span>
+    </div>
+    <div class="cmd-item" onclick="copyEmail();toggleCmd()">
+      <span>Copy Email (kamalesh.nutakki@gmail.com)</span>
+      <span>📋</span>
+    </div>
+    <a class="cmd-item" href="#projects" onclick="toggleCmd()">
+      <span>Jump to Hackathon & AI Projects</span>
+      <span>→</span>
+    </a>
+    <a class="cmd-item" href="#experience" onclick="toggleCmd()">
+      <span>Inspect TCS · JLR Data Engineering Experience</span>
+      <span>→</span>
+    </a>
+    <a class="cmd-item" href="https://github.com/Kamaleshyeager" target="_blank" rel="noopener">
+      <span>Open GitHub (@Kamaleshyeager)</span>
+      <span>↗</span>
+    </a>
+    <a class="cmd-item" href="https://www.linkedin.com/in/kamalesh-nutakki-a76051229/" target="_blank" rel="noopener">
+      <span>Open LinkedIn Profile</span>
+      <span>↗</span>
+    </a>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Email copied to clipboard</div>
+
+<script>
+/* ===================================================================
+   EDITABLE CONTENT — Everything on the page renders from this DATA object.
+   =================================================================== */
+const DATA = {
+  name: "Kamalesh Nutakki",
+  location: "Pune, Maharashtra, India",
+  email: "kamalesh.nutakki@gmail.com",
+  links: {
+    github: "https://github.com/Kamaleshyeager",
+    linkedin: "https://www.linkedin.com/in/kamalesh-nutakki-a76051229/",
+    resume: "#"
+  },
+
+  stats: [
+    { num: "8.94", label: "GPA / 10 · B.Tech CSE" },
+    { num: "94.7%", label: "DR Model Accuracy" },
+    { num: "2x", label: "TCS AI Hackathons" },
+    { num: "20–30%", label: "Manual Effort Cut via LLMs" }
+  ],
+
+  experience: [
+    {
+      title: "Data Engineer",
+      org: "Tata Consultancy Services (TCS) — JLR (Jaguar Land Rover) Account",
+      date: "Feb 2026 — Present",
+      bullets: [
+        "Work within a Business Intelligence team supporting enterprise data pipelines for a global automotive client, maintaining SQL-based EDW pipelines that process hundreds of thousands of records.",
+        "Write and optimize SQL queries and transformations on Google Cloud Platform (BigQuery) to support reporting and analytics workflows.",
+        "Apply prompt engineering across multiple LLMs (GPT, Claude, Gemini) to automate data cleaning and classification, reducing manual effort by ~20–30%.",
+        "Use Python for data validation and transformation scripting, collaborating with cross-functional teams to troubleshoot ETL pipeline issues."
+      ],
+      stack: ["GCP BigQuery", "SQL", "Python", "EDW / ETL", "GPT · Claude · Gemini"]
     }
-    window.addEventListener('keydown', e => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        toggleCmdModal();
-      }
-      if (e.key === 'Escape' && !cmdModal.classList.contains('hidden')) {
-        toggleCmdModal();
-      }
-    });
-  </script>
+  ],
+
+  projects: [
+    {
+      kind: "hackathon",
+      title: "ClarifiAI — Business Analysis Requirements Clarification Chatbot",
+      sub: "TCS AI Friday Season 2 — 4-Hour Hackathon",
+      desc: "Built a working AI chatbot prototype in 4 hours to resolve ambiguous or incomplete business requirements, using the Claude API for context-aware, multi-turn clarification dialogue. Designed a synthetic dataset of 150 annotated requirement scenarios across 8 categories — exceeding the 100-scenario brief — and implemented ambiguity detection, session-based conversation management, and a refined-requirements summary view.",
+      metricLabel: "annotated scenarios",
+      metric: "150",
+      full: true
+    },
+    {
+      kind: "hackathon",
+      title: "Supply Chain Operations Console (SCMS)",
+      sub: "TCS AMD AI Hackathon · 2026",
+      desc: "Built an AI-powered supply chain console with an AI Copilot, combining XGBoost/Random Forest demand forecasting with Gemini 1.5 Pro for natural-language operational insights.",
+      metricLabel: "architecture",
+      metric: "XGBoost + Gemini"
+    },
+    {
+      kind: "academic",
+      title: "Detection of Diabetic Retinopathy",
+      sub: "Deep Learning · Retinal Imaging (APTOS)",
+      desc: "Processed 10,000+ retinal images using Python (Pandas, NumPy) with automated preprocessing pipelines; achieved 94.7% classification accuracy via CNN architecture optimization (ResNet/DenseNet).",
+      metricLabel: "validation accuracy",
+      metric: "94.7%"
+    },
+    {
+      kind: "academic",
+      title: "Bird Species Recognition",
+      sub: "Computer Vision · Image Classification",
+      desc: "Built and cleaned a multi-class image classification dataset; achieved 91.86% accuracy and validated model generalization against unseen test scenarios.",
+      metricLabel: "test accuracy",
+      metric: "91.86%"
+    },
+    {
+      kind: "academic",
+      title: "Sentiment Analysis of Hotel Reviews",
+      sub: "Natural Language Processing · Text Pipeline",
+      desc: "Extracted and cleaned unstructured text data from hotel reviews and applied NLP classification pipelines to produce structured sentiment datasets for downstream analytics.",
+      metricLabel: "domain",
+      metric: "NLP Pipeline"
+    }
+  ],
+
+  stack: [
+    { label: "AI / GenAI Engineering", items: ["Prompt Engineering", "Claude API", "GPT", "Gemini 1.5 Pro", "Ollama", "RAG Concepts", "Conversational AI Design"] },
+    { label: "Data Engineering", items: ["SQL", "GCP BigQuery", "EDW Architecture", "ETL Pipelines", "Data Observability", "Data Cleaning & Transformation"] },
+    { label: "Programming", items: ["Python (Pandas, NumPy)", "Java", "Advanced SQL", "Streamlit"] },
+    { label: "Data Science & ML", items: ["XGBoost", "Random Forest", "Deep Learning (CNNs)", "NLP", "Scikit-learn"] },
+    { label: "Cloud & Tooling", items: ["Google Cloud Platform", "AWS", "VS Code", "Google Colab", "GitHub Codespaces", "Git"] }
+  ],
+
+  education: [
+    {
+      degree: "B.Tech in Computer Science and Engineering",
+      school: "Vellore Institute of Technology (VIT)",
+      date: "Aug 2021 — May 2025",
+      gpa: "GPA: 8.94 / 10"
+    },
+    {
+      degree: "12th Intermediate",
+      school: "Sarada Junior College",
+      date: "Apr 2020 — Mar 2021",
+      gpa: "GPA: 9.31 / 10"
+    }
+  ],
+
+  certifications: [
+    { name: "Claude Certified Developer — Foundations (Anthropic)", year: "Sep 2026" },
+    { name: "Claude Certified Associate — Foundations (Anthropic)", year: "Sep 2026" },
+    { name: "Oracle Database 19c: Basic SQL — Oracle University", year: "Aug 2025" },
+    { name: "Career Essentials in Generative AI — Microsoft & LinkedIn", year: "May 2024" },
+    { name: "AWS Certified Cloud Practitioner — Amazon Web Services", year: "Jan 2024" }
+  ],
+
+  leadership: [
+    "Club Supervisor, Next Gen Cloud Club — VIT",
+    "Core Committee Member, Vitopia — VIT",
+    "Vice President, Anchoring Club — VIT"
+  ]
+};
+
+/* ===================================================================
+   DOM RENDER ENGINE
+   =================================================================== */
+function el(tag, cls, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+const parts = DATA.name.split(' ');
+document.getElementById('nav-name-slot').textContent = DATA.name.toLowerCase().replace(' ', '.');
+document.getElementById('hero-name').innerHTML = `${parts[0]}<br><span class="serif-italic">${parts.slice(1).join(' ')}.</span>`;
+document.getElementById('github-link').href = DATA.links.github;
+document.getElementById('linkedin-link').href = DATA.links.linkedin;
+document.getElementById('footer-text').innerHTML = `© ${new Date().getFullYear()} ${DATA.name} — built with HTML, CSS &amp; vanilla JS`;
+
+// Render Hero Stats
+const statsMount = document.getElementById('hero-stats');
+DATA.stats.forEach(s => {
+  const d = el('div', 'stat spotlight-card reveal');
+  d.innerHTML = `<div class="num">${s.num}</div><div class="label">${s.label}</div>`;
+  statsMount.appendChild(d);
+});
+
+// Render Experience
+const expMount = document.getElementById('experience-mount');
+DATA.experience.forEach(job => {
+  const card = el('div', 'exp-card spotlight-card reveal');
+  card.innerHTML = `
+    <div class="exp-top">
+      <div>
+        <div class="exp-title">${job.title}</div>
+        <div class="exp-org">${job.org}</div>
+      </div>
+      <div class="exp-date">${job.date}</div>
+    </div>
+    <ul class="exp-list">${job.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+    <div class="exp-stack">${job.stack.map(s => `<span class="pill">${s}</span>`).join('')}</div>
+  `;
+  expMount.appendChild(card);
+});
+
+// Render Projects with Filtering
+const projMount = document.getElementById('projects-mount');
+const kindLabel = { hackathon: 'Hackathon Sprint', academic: 'Deep Learning / NLP', side: 'System Build' };
+
+function renderProjects(filter = 'all') {
+  projMount.innerHTML = '';
+  const list = DATA.projects.filter(p => filter === 'all' || p.kind === filter);
+  list.forEach((p, idx) => {
+    const isFull = p.full && filter === 'all';
+    const card = el('article', `proj-card spotlight-card reveal in${isFull ? ' full' : ''}`);
+    card.innerHTML = `
+      <div>
+        <div class="proj-top-bar">
+          <span class="proj-kicker kind-${p.kind}">${kindLabel[p.kind] || p.kind}</span>
+          <span class="proj-index">SYS_0${idx + 1}</span>
+        </div>
+        <h3>${p.title}</h3>
+        <div class="proj-sub">${p.sub}</div>
+        <p class="proj-desc">${p.desc}</p>
+      </div>
+      <div class="proj-meta">
+        <span>// ${p.metricLabel}</span>
+        <span class="proj-metric">${p.metric}</span>
+      </div>
+    `;
+    projMount.appendChild(card);
+  });
+  bindSpotlights();
+}
+renderProjects();
+
+document.querySelectorAll('#project-filters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#project-filters .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProjects(btn.dataset.filter);
+  });
+});
+
+// Render Stack
+const stackMount = document.getElementById('stack-mount');
+DATA.stack.forEach(group => {
+  const card = el('div', 'stack-card spotlight-card reveal');
+  card.innerHTML = `
+    <div class="stack-label">${group.label}</div>
+    <div class="stack-tags">${group.items.map(i => `<span class="stack-tag">${i}</span>`).join('')}</div>
+  `;
+  stackMount.appendChild(card);
+});
+
+// Render Education & Certs
+const eduMount = document.getElementById('education-mount');
+const eduCol = el('div', 'reveal');
+DATA.education.forEach(ed => {
+  const card = el('div', 'ed-card spotlight-card');
+  card.style.marginBottom = '18px';
+  card.innerHTML = `
+    <h3>${ed.degree}</h3>
+    <div class="ed-school">${ed.school}</div>
+    <div class="ed-meta"><span>${ed.date}</span><span>${ed.gpa}</span></div>
+  `;
+  eduCol.appendChild(card);
+});
+
+if (DATA.leadership && DATA.leadership.length) {
+  const leadCard = el('div', 'cert-card spotlight-card');
+  leadCard.innerHTML = `<h4>Leadership &amp; Campus Roles</h4><ul class="cert-list">${
+    DATA.leadership.map(l => `<li><span>${l}</span></li>`).join('')
+  }</ul>`;
+  eduCol.appendChild(leadCard);
+}
+eduMount.appendChild(eduCol);
+
+const certCol = el('div', 'reveal');
+const certCard = el('div', 'cert-card spotlight-card');
+certCard.innerHTML = `<h4>Verified Certifications</h4><ul class="cert-list">${
+  DATA.certifications.map(c => `<li><span>${c.name}</span><span class="cert-year">${c.year}</span></li>`).join('')
+}</ul>`;
+certCol.appendChild(certCard);
+eduMount.appendChild(certCol);
+
+// Interactive Mouse Spotlight Tracking
+function bindSpotlights() {
+  document.querySelectorAll('.spotlight-card').forEach(card => {
+    card.onmousemove = e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+  });
+}
+bindSpotlights();
+
+// Scroll Reveal Observer
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(node => io.observe(node));
+
+// Command Palette & Clipboard Helpers
+function toggleCmd() {
+  document.getElementById('cmd-modal').classList.toggle('open');
+}
+function copyEmail() {
+  navigator.clipboard.writeText(DATA.email);
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+window.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    toggleCmd();
+  }
+  if (e.key === 'Escape') {
+    document.getElementById('cmd-modal').classList.remove('open');
+  }
+});
+</script>
 </body>
 </html>
